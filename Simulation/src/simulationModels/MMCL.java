@@ -45,14 +45,12 @@ public class MMCL extends Simulation {
 
 	// OLD : public void startSimulation(double meanInterArrivalTime, double meanServiceTime, int numberOfJobs) {
 	//NEW
+	
 	public void startSimulation(double meanInterArrivalTime, double meanServiceTime, int numberOfJobs, int c, int maxLength) {
+		int windowSize=1000; //The maximum (number of jobs) skipped between the "past reading" and the "current reading"
+		int counter =0;
 	//
 		
-		//NEW
-		double lambda = 1/(double)meanInterArrivalTime;
-		double mu =1/(double)meanServiceTime;
-		this.TMQL=M_M_c_L.Calc_E_n(lambda,mu,c,maxLength);
-		//
 		
 		reset();
 		ExponentialGenerator interArrivalTimeGenerator = new ExponentialGenerator(meanInterArrivalTime);
@@ -72,10 +70,17 @@ public class MMCL extends Simulation {
 
 		
 		//NEW
-		while (!isInSteadyState()) {
-		//
-		// OLD : while (servedJobs.size() + droppedJobs.size() < numberOfJobs) {
 		
+		while (true){
+			this.CMQL = getMeanQueueLength();
+			counter++;
+			if(counter%windowSize==0){
+				if(isInSteadyState()) {
+					break;
+				}
+			this.PMQL=getMeanQueueLength();
+			}
+		// OLD : while (servedJobs.size() + droppedJobs.size() < numberOfJobs) {
 			
 			/**
 			 * Need to know what is the next event and what time it is.
@@ -146,9 +151,6 @@ public class MMCL extends Simulation {
 			}
 			
 			
-			//NEW
-			this.CMQL = getMeanQueueLength();
-			//
                                          
 		}
 	}

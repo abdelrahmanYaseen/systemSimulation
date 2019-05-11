@@ -11,12 +11,13 @@ public abstract class Simulation {
 	
 	
 	//NEW
-	protected double TMQL=Double.POSITIVE_INFINITY; //Theoretical Mean Queue Length
-	protected double CMQL = Double.NEGATIVE_INFINITY; //initialize Current Mean Queue Length to -inf
-	protected double e = 0.00001;// initialize epsilon, the steady state cutoff
-	
+	protected double PMQL =0; //Past Mean Queue Length
+	protected double CMQL = Double.NEGATIVE_INFINITY; // Current Mean Queue Length 
+	protected double e = 0.0001;// initialize epsilon, the steady state cutoff
+	 
 	protected boolean isInSteadyState() {
-		return Math.abs(TMQL-CMQL) < e;
+		System.out.println("past:"+PMQL+"  -  current:"+CMQL); //uncomment for debugging
+		return Math.abs(PMQL-CMQL) < e;
 	}
 	//
 	protected int numberOfServers;
